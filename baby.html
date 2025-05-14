@@ -242,6 +242,8 @@
   <div class="btns">
     <label for="accept" class="btn">Yes</label>
     <div class="btn no">No</div>
+    <button id="noButton">No</button>
+
   </div>
 </div>
 
@@ -289,6 +291,18 @@
   <meta charset="UTF-8">
   <title>Yay or Nay</title>
   <style>
+    @keyframes shake {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-5px, 5px); }
+  50% { transform: translate(5px, -5px); }
+  75% { transform: translate(-5px, -5px); }
+  100% { transform: translate(0, 0); }
+}
+
+#noButton.shake {
+  animation: shake 0.3s;
+}
+
     body {
       font-family: sans-serif;
       text-align: center;
@@ -326,6 +340,27 @@
 
     function moveButton() {
       const offsetX = Math.random()
+<script>
+  const noBtn = document.getElementById('noButton');
+
+  function moveButton() {
+    const offsetX = Math.random() * 300 - 150;
+    const offsetY = Math.random() * 300 - 150;
+    noBtn.style.position = 'absolute';
+    noBtn.style.left = `${window.innerWidth / 2 + offsetX}px`;
+    noBtn.style.top = `${window.innerHeight / 2 + offsetY}px`;
+    noBtn.classList.add('shake');
+    setTimeout(() => {
+      noBtn.classList.remove('shake');
+    }, 300);
+  }
+
+  noBtn.addEventListener('mouseenter', moveButton);
+  noBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    moveButton();
+  });
+</script>
 
 </body>
 </html>
