@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Do You Accept This Ride?</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fff0f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    .intro {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, #ffe0ec, #fceaff);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      transition: opacity 0.8s ease-in-out;
+    }
+
+    .intro h1 {
+      font-size: 2.2em;
+      margin-bottom: 2rem;
+      color: #333;
+    }
+
+    .btns {
+      display: flex;
+      gap: 20px;
+    }
+
+    .btn {
+      padding: 0.8rem 1.5rem;
+      border-radius: 12px;
+      border: none;
+      font-size: 1.2em;
+      font-weight: bold;
+      cursor: pointer;
+      background-color: #ffc0cb;
+      color: #333;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #ff9fb3;
+    }
+
+    #accept:checked ~ .intro {
+      display: none;
+    }
+
+    .no:hover {
+      position: relative;
+      animation: dodge 0.4s ease-in-out forwards;
+    }
+
+    @keyframes dodge {
+      0% { left: 0; }
+      50% { left: 100px; }
+      100% { left: -100px; }
+    }
+
+    input[type="radio"] {
+      display: none;
+    }
+
+    .main-content {
+      display: none;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    #accept:checked ~ .main-content {
+      display: block;
+    }
+
+    .map {
+      position: relative;
+      height: 200px;
+      margin-bottom: 2rem;
+      background: linear-gradient(to right, #d0e8f2, #e6f7ff);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .emoji {
+      font-size: 2.5em;
+      position: absolute;
+      top: 80px;
+      left: 0;
+      transition: left 0.8s ease-in-out;
+    }
+
+    .emoji::before {
+      display: inline-block;
+    }
+
+    input[name="stop"] {
+      display: none;
+    }
+
+    .stops {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      padding: 0.6rem 1rem;
+      background-color: #ffc0cb;
+      color: #333;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 1em;
+      max-width: 140px;
+    }
+
+    label:hover {
+      background-color: #fcb0c5;
+    }
+
+    .message {
+      font-size: 1.2em;
+      min-height: 100px;
+      margin-top: 1rem;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .photo {
+      max-width: 400px;
+      margin: 1rem auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .photo-container {
+      display: none;
+    }
+
+    #brussels:checked ~ .main-content .map .emoji { left: 5%; transform: scaleX(-1); }
+    #leuven:checked ~ .main-content .map .emoji { left: 12%; transform: scaleX(-1); }
+    #luxembourg:checked ~ .main-content .map .emoji { left: 20%; transform: scaleX(1); }
+    #antwerp:checked ~ .main-content .map .emoji { left: 30%; transform: scaleX(-1); }
+    #denhaag:checked ~ .main-content .map .emoji { left: 40%; transform: scaleX(-1); }
+    #aachen:checked ~ .main-content .map .emoji { left: 50%; transform: scaleX(-1); }
+    #algarve:checked ~ .main-content .map .emoji { left: 60%; transform: scaleX(1); }
+    #eindhoven:checked ~ .main-content .map .emoji { left: 70%; transform: scaleX(1); }
+    #lisbon:checked ~ .main-content .map .emoji { left: 80%; transform: scaleX(1); }
+
+    #luxembourg:checked ~ .main-content .map .emoji::before,
+    #algarve:checked ~ .main-content .map .emoji::before,
+    #eindhoven:checked ~ .main-content .map .emoji::before,
+    #lisbon:checked ~ .main-content .map .emoji::before {
+      content: "✈️";
+    }
+
+    #brussels:checked ~ .main-content .map .emoji::before,
+    #leuven:checked ~ .main-content .map .emoji::before,
+    #antwerp:checked ~ .main-content .map .emoji::before,
+    #denhaag:checked ~ .main-content .map .emoji::before,
+    #aachen:checked ~ .main-content .map .emoji::before {
+      content: "🚗";
+    }
+
+    /* Messages */
+    #brussels:checked ~ .main-content .message::before {
+      content: "🇧🇪 Brussels — Our first memory in person: an amazing first date that made me think you were the nicest man I had ever met.";
+    }
+    #brussels:checked ~ .main-content .brussels-photo { display: block; }
+
+    #leuven:checked ~ .main-content .message::before {
+      content: "🏠 Leuven — Our first 'home'. With all the ups and downs, I'm grateful we lived together and all the nights we held each other.";
+    }
+    #leuven:checked ~ .main-content .leuven-photo { display: block; }
+
+    #luxembourg:checked ~ .main-content .message::before {
+      content: "🇱🇺 Luxembourg — Our first road trip and a place I will always cherish. Also where we caught our first flight together.";
+    }
+    #luxembourg:checked ~ .main-content .luxembourg-photo { display: block; }
+
+    #antwerp:checked ~ .main-content .message::before {
+      content: "🚌 Antwerp — A meaningful place for us. We spent so much time there, and I wouldn't trade all those hours I was by your side when you worked for anything.";
+    }
+    #antwerp:checked ~ .main-content .antwerp-photo { display: block; }
+
+    #denhaag:checked ~ .main-content .message::before {
+      content: "🇳🇱 Den Haag — Where you brought me into your world and for that I'm forever thankful.";
+    }
+    #denhaag:checked ~ .main-content .denhaag-photo { display: block; }
+
+    #aachen:checked ~ .main-content .message::before {
+      content: "🎄 Aachen — One of the most special trips too. Remember the cute Christmas market?";
+    }
+    #aachen:checked ~ .main-content .aachen-photo { display: block; }
+
+    #algarve:checked ~ .main-content .message::before {
+      content: "🌊 Algarve — In this town stays the sparks of our reunion. It was the most special, precious and amazing time. I'm thankful.";
+    }
+    #algarve:checked ~ .main-content .algarve-photo { display: block; }
+
+    #eindhoven:checked ~ .main-content .message::before {
+      content: "🛏️ Eindhoven — It was great to be forced to cuddle in the tiny bed. Thanks for the sacrifices you made for me.";
+    }
+    #eindhoven:checked ~ .main-content .eindhoven-photo { display: block; }
+
+    #lisbon:checked ~ .main-content .message::before {
+      content: "🇵🇹 Lisbon — And, for the next stop: Lisbon. I can't wait to have you in my world this time.";
+    }
+  </style>
+</head>
+<body>
+
+<input type="radio" name="acceptance" id="accept">
+<input type="radio" name="stop" id="brussels">
+<input type="radio" name="stop" id="leuven">
+<input type="radio" name="stop" id="luxembourg">
+<input type="radio" name="stop" id="antwerp">
+<input type="radio" name="stop" id="denhaag">
+<input type="radio" name="stop" id="aachen">
+<input type="radio" name="stop" id="algarve">
+<input type="radio" name="stop" id="eindhoven">
+<input type="radio" name="stop" id="lisbon">
+
+<div class="intro">
+  <h1>Do you accept this ride?</h1>
+  <div class="btns">
+    <label for="accept" class="btn">Yes</label>
+    <div class="btn no">No</div>
+  </div>
+</div>
+
+<div class="main-content">
+  <h1>To celebrate, I thought we could relive some special memories 💕</h1>
+
+  <div class="stops">
+    <label for="brussels">🇧🇪 Brussels</label>
+    <label for="leuven">🏠 Leuven</label>
+    <label for="luxembourg">🇱🇺 Luxembourg</label>
+    <label for="antwerp">🚌 Antwerp</label>
+    <label for="denhaag">🇳🇱 Den Haag</label>
+    <label for="aachen">🎄 Aachen</label>
+    <label for="algarve">🌊 Algarve</label>
+    <label for="eindhoven">🛏️ Eindhoven</label>
+    <label for="lisbon">🇵🇹 Lisbon</label>
+  </div>
+
+  <div class="map">
+    <div class="emoji"></div>
+  </div>
+
+  <div class="message"></div>
+
+  <!-- Image display -->
+  <img src="website_images/brussels_1.jpeg" class="photo-container brussels-photo photo">
+  <img src="website_images/brussels_2.jpeg" class="photo-container brussels-photo photo">
+  <img src="website_images/leuven.jpeg" class="photo-container leuven-photo photo">
+  <img src="website_images/luxembourg.jpeg" class="photo-container luxembourg-photo photo">
+  <img src="website_images/antwerp.jpeg" class="photo-container antwerp-photo photo">
+  <img src="website_images/denhaag.jpeg" class="photo-container denhaag-photo photo">
+  <img src="website_images/aachen.jpeg" class="photo-container aachen-photo photo">
+  <img src="website_images/algarve.png" class="photo-container algarve-photo photo">
+  <img src="website_images/eindhoven.jpeg" class="photo-container eindhoven-photo photo">
+
+  <p style="margin-top: 1rem; font-size: 1.1em;">
+    Happy 8 months baby💞<br>
+    I love you forever
+  </p>
+</div>
+
+</body>
+</html>
