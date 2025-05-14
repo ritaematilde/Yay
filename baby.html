@@ -56,15 +56,21 @@
       display: none;
     }
 
-    .no:hover {
-      position: relative;
-      animation: dodge 0.4s ease-in-out forwards;
+    /* Shaking and moving the "No" button */
+    @keyframes shake {
+      0% { transform: translate(0, 0); }
+      25% { transform: translate(-5px, 5px); }
+      50% { transform: translate(5px, -5px); }
+      75% { transform: translate(-5px, -5px); }
+      100% { transform: translate(0, 0); }
     }
 
-    @keyframes dodge {
-      0% { left: 0; }
-      50% { left: 100px; }
-      100% { left: -100px; }
+    #noButton.shake {
+      animation: shake 0.3s;
+    }
+
+    #noButton {
+      position: absolute;
     }
 
     input[type="radio"] {
@@ -152,76 +158,6 @@
     .photo-container {
       display: none;
     }
-
-    #brussels:checked ~ .main-content .map .emoji { left: 5%; transform: scaleX(-1); }
-    #leuven:checked ~ .main-content .map .emoji { left: 12%; transform: scaleX(-1); }
-    #luxembourg:checked ~ .main-content .map .emoji { left: 20%; transform: scaleX(1); }
-    #antwerp:checked ~ .main-content .map .emoji { left: 30%; transform: scaleX(-1); }
-    #denhaag:checked ~ .main-content .map .emoji { left: 40%; transform: scaleX(-1); }
-    #aachen:checked ~ .main-content .map .emoji { left: 50%; transform: scaleX(-1); }
-    #algarve:checked ~ .main-content .map .emoji { left: 60%; transform: scaleX(1); }
-    #eindhoven:checked ~ .main-content .map .emoji { left: 70%; transform: scaleX(1); }
-    #lisbon:checked ~ .main-content .map .emoji { left: 80%; transform: scaleX(1); }
-
-    #luxembourg:checked ~ .main-content .map .emoji::before,
-    #algarve:checked ~ .main-content .map .emoji::before,
-    #eindhoven:checked ~ .main-content .map .emoji::before,
-    #lisbon:checked ~ .main-content .map .emoji::before {
-      content: "✈️";
-    }
-
-    #brussels:checked ~ .main-content .map .emoji::before,
-    #leuven:checked ~ .main-content .map .emoji::before,
-    #antwerp:checked ~ .main-content .map .emoji::before,
-    #denhaag:checked ~ .main-content .map .emoji::before,
-    #aachen:checked ~ .main-content .map .emoji::before {
-      content: "🚗";
-    }
-
-    /* Messages */
-    #brussels:checked ~ .main-content .message::before {
-      content: "🇧🇪 Brussels — Our first memory in person: an amazing first date that made me think you were the nicest man I had ever met.";
-    }
-    #brussels:checked ~ .main-content .brussels-photo { display: block; }
-
-    #leuven:checked ~ .main-content .message::before {
-      content: "🏠 Leuven — Our first 'home'. With all the ups and downs, I'm grateful we lived together and all the nights we held each other.";
-    }
-    #leuven:checked ~ .main-content .leuven-photo { display: block; }
-
-    #luxembourg:checked ~ .main-content .message::before {
-      content: "🇱🇺 Luxembourg — Our first road trip and a place I will always cherish. Also where we caught our first flight together.";
-    }
-    #luxembourg:checked ~ .main-content .luxembourg-photo { display: block; }
-
-    #antwerp:checked ~ .main-content .message::before {
-      content: "🚌 Antwerp — A meaningful place for us. We spent so much time there, and I wouldn't trade all those hours I was by your side when you worked for anything.";
-    }
-    #antwerp:checked ~ .main-content .antwerp-photo { display: block; }
-
-    #denhaag:checked ~ .main-content .message::before {
-      content: "🇳🇱 Den Haag — Where you brought me into your world and for that I'm forever thankful.";
-    }
-    #denhaag:checked ~ .main-content .denhaag-photo { display: block; }
-
-    #aachen:checked ~ .main-content .message::before {
-      content: "🎄 Aachen — One of the most special trips too. Remember the cute Christmas market?";
-    }
-    #aachen:checked ~ .main-content .aachen-photo { display: block; }
-
-    #algarve:checked ~ .main-content .message::before {
-      content: "🌊 Algarve — In this town stays the sparks of our reunion. It was the most special, precious and amazing time. I'm thankful.";
-    }
-    #algarve:checked ~ .main-content .algarve-photo { display: block; }
-
-    #eindhoven:checked ~ .main-content .message::before {
-      content: "🛏️ Eindhoven — It was great to be forced to cuddle in the tiny bed. Thanks for the sacrifices you made for me.";
-    }
-    #eindhoven:checked ~ .main-content .eindhoven-photo { display: block; }
-
-    #lisbon:checked ~ .main-content .message::before {
-      content: "🇵🇹 Lisbon — And, for the next stop: Lisbon. I can't wait to have you in my world this time.";
-    }
   </style>
 </head>
 <body>
@@ -241,9 +177,7 @@
   <h1>Do you accept this ride?</h1>
   <div class="btns">
     <label for="accept" class="btn">Yes</label>
-    <div class="btn no">No</div>
-    <button id="noButton">No</button>
-
+    <button id="noButton" class="btn">No</button>
   </div>
 </div>
 
@@ -268,7 +202,6 @@
 
   <div class="message"></div>
 
-  <!-- Image display -->
   <img src="website_images/brussels_1.jpeg" class="photo-container brussels-photo photo">
   <img src="website_images/brussels_2.jpeg" class="photo-container brussels-photo photo">
   <img src="website_images/leuven.jpeg" class="photo-container leuven-photo photo">
@@ -285,61 +218,6 @@
   </p>
 </div>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Yay or Nay</title>
-  <style>
-    @keyframes shake {
-  0% { transform: translate(0, 0); }
-  25% { transform: translate(-5px, 5px); }
-  50% { transform: translate(5px, -5px); }
-  75% { transform: translate(-5px, -5px); }
-  100% { transform: translate(0, 0); }
-}
-
-#noButton.shake {
-  animation: shake 0.3s;
-}
-
-    body {
-      font-family: sans-serif;
-      text-align: center;
-      margin-top: 100px;
-    }
-    button {
-      font-size: 24px;
-      padding: 10px 20px;
-      margin: 20px;
-      cursor: pointer;
-    }
-    #noButton {
-      position: absolute;
-    }
-    @keyframes shake {
-      0% { transform: translate(0, 0); }
-      25% { transform: translate(-5px, 5px); }
-      50% { transform: translate(5px, -5px); }
-      75% { transform: translate(-5px, -5px); }
-      100% { transform: translate(0, 0); }
-    }
-    .shake {
-      animation: shake 0.3s;
-    }
-  </style>
-</head>
-<body>
-
-  <h1>Do you love this?</h1>
-  <button id="yesButton">Yes</button>
-  <button id="noButton">No</button>
-
-  <script>
-    const noBtn = document.getElementById('noButton');
-
-    function moveButton() {
-      const offsetX = Math.random()
 <script>
   const noBtn = document.getElementById('noButton');
 
